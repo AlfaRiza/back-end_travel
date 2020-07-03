@@ -34,8 +34,17 @@
                 <div class="row">
                     <div class="col-md-8 pl-lg-0">
                         <div class="card card-details">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <h1>Who is going?</h1>
-                            <p>Trip to Ubud, Bali</p>
+                            <p>Trip to {{ $item->travel_package->title }}, {{ $item->travel_package->location }}</p>
 
                             <div class="attendee">
                                 <table class="table table-responsive-sm text-center">
@@ -50,67 +59,62 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @forelse ($item->details as $detail)
                                         <tr>
-                                            <td> <img src="{{ url('frontend/images/pic-1.jpg') }}" height="60px"
+                                            <td> <img src="https://ui-avatars.com/api/?name={{ $detail->username }}" height="60px"
                                                     class="rounded-circle"> </td>
                                             <td class="align-middle">
-                                                Angga Risky
+                                                {{ $detail->username }}
                                             </td>
                                             <td class="align-middle">
-                                                CN
+                                                {{ $detail->nationality }}
                                             </td>
                                             <td class="align-middle">
-                                                N/A
+                                                {{ $detail->is_visa ? '30 Days' : 'N/A' }}
                                             </td>
                                             <td class="align-middle">
-                                                .Active
+                                                {{ \Carbon\Carbon::createFromDate($detail->doe_passport) > \Carbon\Carbon::now() ? 'Active' : 'Inactive' }}
                                             </td>
                                             <td class="align-middle">
-                                                <a href="#">
+                                                <a href="{{ route('checkout-remove', $detail->id) }}">
                                                     <img src="{{ url('frontend/images/Group 4.jpg') }}" alt="">
                                                 </a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td> <img src="{{ url('frontend/images/pic-2.jpg') }}" height="60px"
-                                                    class="rounded-circle"> </td>
-                                            <td class="align-middle">
-                                                Galih Pratama
-                                            </td>
-                                            <td class="align-middle">
-                                                SG
-                                            </td>
-                                            <td class="align-middle">
-                                                30 Days
-                                            </td>
-                                            <td class="align-middle">
-                                                .Active
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="#">
-                                                    <img src="{{ url('frontend/images/Group 4.jpg') }}" alt="">
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">
+                                                    No Visitor
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                        
                                     </tbody>
                                 </table>
                             </div>
                             <div class="member mt-3">
                                 <h2>Member</h2>
-                                <form action="#" class="form-inline">
-                                    <label for="inputUsername" class="sr-only">Name</label>
-                                    <input type="text" class="form-control mb-2 mr-sm-2" id="inputUsername"
+                                <form action="{{ route('checkout-create', $item->id) }}" method="POST" class="form-inline">
+                                    @csrf
+                                    <label for="username" class="sr-only">Name</label>
+                                    <input type="text" name="username" required class="form-control mb-2 mr-sm-2" id="username"
                                         placeholder="Username">
+
+                                    <label for="nationality" class="sr-only">Nationality</label>
+                                    <input type="text" class="form-control mb-2 mr-sm-2" id="nationality" name="nationality" style="width: 50px"
+                                    required
+                                    placeholder="Nationality">
+
                                     <label for="inputVisa" class="sr-only">Visa</label>
-                                    <select name="inputVisa" id="inputVisa" class="custom-select mb-2 mr-sm-2">
+                                    <select name="is_visa" id="inputVisa" class="custom-select mb-2 mr-sm-2" required>
                                         <option value="visa">Visa</option>
-                                        <option value="30 Days">30 Days</option>
-                                        <option value="N/A">N/A</option>
+                                        <option value="1">30 Days</option>
+                                        <option value="0">N/A</option>
                                     </select>
 
-                                    <label for="doePassport" class="sr-only">DOE Passport</label>
+                                    <label for="doe_passport" class="sr-only">DOE Passport</label>
                                     <div class="input-group mb-2 mr-sm-2">
-                                        <input type="text" class="form-control datepicker" id="doePassport"
+                                        <input type="text" class="form-control datepicker" id="doe_passport" name="doe_passport"
                                             placeholder="DOE Passport">
                                     </div>
 
@@ -139,7 +143,7 @@
                                         <p class=" text-main">Members</p>
                                     </div>
                                     <div class="d-flex justify-content-end text-detail">
-                                        <p class=" text-detail">2 persons</p>
+                                        <p class=" text-detail">{{ $item->details->count() }} persons</p>
                                     </div>
                                 </div>
 
@@ -148,7 +152,7 @@
                                         <p class=" text-main">Additional VISA</p>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <p class="text-detail">$ 190,00</p>
+                                        <p class="text-detail">$ {{ $item->additional_visa }},00</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -156,7 +160,7 @@
                                         <p class=" text-main">Trip Price</p>
                                     </div>
                                     <div class="d-flex justify-content-end text-detail">
-                                        <p class=" text-detail">$ 80,00 / person</p>
+                                        <p class=" text-detail">$ {{ $item->travel_package->price }} / person</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -164,7 +168,7 @@
                                         <p class=" text-main">Sub Total</p>
                                     </div>
                                     <div class="d-flex justify-content-end text-detail">
-                                        <p class=" text-detail">$ 280,00</p>
+                                        <p class=" text-detail">$ {{ $item->transaction_total }},00</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -173,9 +177,9 @@
                                     </div>
                                     <div class="d-flex justify-content-end text-detail">
                                         <span class="text-blue">
-                                            $ 279,
+                                            $ {{ $item->transaction_total }},
                                         </span>
-                                        <span class="text-orange">32</span>
+                                        <span class="text-orange">{{ mt_rand(0,99) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -219,12 +223,12 @@
                             <!-- End Bank 2 -->
                         </div>
                         <div class="join-container">
-                            <a href="{{ route('success') }}" class="btn btn-block btn-join-now mt-3 py-2">
+                            <a href="{{ route('checkout-success', $item->id) }}" class="btn btn-block btn-join-now mt-3 py-2">
                                 I Have Made Payment
                             </a>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="{{ route('detail') }}" class="btn">
+                            <a href="{{ route('detail', $item->travel_package->slug) }}" class="btn">
                                 <p class="btn-cancle">Cancle Booking</p>
                             </a>
                         </div>
@@ -245,6 +249,7 @@
 <script>
     $('document').ready(function () {
         $('.datepicker').datepicker({
+        format : 'yyyy-mm-dd',
             uiLibrary: 'bootstrap4',
             icons: {
                 rightIcon: '<img src="{{ url('frontend/images/ic_doe.jpg') }}"/>'

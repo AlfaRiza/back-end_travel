@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.checkout')
 
 @section('title', 'Detail Travel')
     
@@ -31,72 +31,52 @@
             <div class="row">
                 <div class="col-8 pl-lg-0">
                     <div class="card card-details">
-                        <h1>Nusa Peninda</h1>
-                        <p>Republik of Indonesia Raya</p>
+                        <h1>{{ $item->title }}</h1>
+                        <p>{{ $item->location }}</p>
                         <!-- Galery -->
                         <div class="gallery">
-                            <div class="xzoom-container">
-                                <img src="frontend/images/details-1.jpg" alt="" class="xzoom" id="xzoom-default"
-                                    xoriginal="frontend/images/details-1.jpg">
-                            </div>
-                            <div class="xzoom-thumbs">
-                                <a href="frontend/images/details-1.jpg">
-                                    <img src="frontend/images/details-1.jpg" alt="" class="xzoom-gallery"
-                                        width="120px" xpreview="frontend/images/details-1.jpg">
-                                </a>
-                                <a href="frontend/images/details-1.jpg">
-                                    <img src="frontend/images/details-1.jpg" alt="" class="xzoom-gallery"
-                                        width="120px" xpreview="frontend/images/details-1.jpg">
-                                </a>
-                                <a href="frontend/images/details-1.jpg">
-                                    <img src="frontend/images/details-1.jpg" alt="" class="xzoom-gallery"
-                                        width="120px" xpreview="frontend/images/details-1.jpg">
-                                </a>
-                                <a href="frontend/images/details-1.jpg">
-                                    <img src="frontend/images/details-1.jpg" alt="" class="xzoom-gallery"
-                                        width="120px" xpreview="frontend/images/details-1.jpg">
-                                </a>
-                                <a href="frontend/images/details-1.jpg">
-                                    <img src="frontend/images/details-1.jpg" alt="" class="xzoom-gallery"
-                                        width="120px" xpreview="frontend/images/details-1.jpg">
-                                </a>
-                            </div>
+                            @if ($item->galleries->count())
+                                <div class="xzoom-container">
+                                    <img src="{{ Storage::url($item->galleries->first()->image) }}" alt="" class="xzoom" id="xzoom-default"
+                                        xoriginal="{{ Storage::url($item->galleries->first()->image) }}">
+                                </div>
+                                <div class="xzoom-thumbs">
+                                    @foreach ($item->galleries as $gallery)
+                                    <a href="{{ Storage::url($gallery->image) }}">
+                                        <img src="{{ Storage::url($gallery->image) }}" alt="" class="xzoom-gallery"
+                                            width="120px" xpreview="{{ Storage::url($gallery->image) }}">
+                                    </a>
+                                    @endforeach
+                                    
+                                </div>
+                            @endif
                         </div>
                         <!-- Akhir Galery -->
                         <h2>Tentang wisata</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa ipsam aperiam, aliquam
-                            repudiandae laborum omnis ipsa voluptas dolor libero qui eum quam perspiciatis sunt
-                            pariatur saepe reprehenderit dolore quod fuga!
-                            Laborum corporis delectus eum ipsum at nisi deserunt dolore sint, mollitia aspernatur
-                            explicabo iure illo consectetur voluptatum dolorem expedita autem quasi, fugit,
-                            praesentium repellendus animi saepe voluptatibus eius. Obcaecati, enim?
-                            Optio et fuga, id sapiente dolore consequatur, fugiat ad beatae, illum labore odit animi
-                            natus? Nulla illo cupiditate libero ab dolorem corporis sapiente rem! Labore dolorem
-                            aliquid at distinctio. Sed.</p>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim nobis, nesciunt dolor quis
-                            nisi pariatur temporibus dicta? Officia iusto impedit esse ex pariatur veritatis aliquid
-                            maxime, odit, ad labore eos!</p>
+                        <p>
+                            {!! $item->about !!}
+                        </p>
                         <div class="features">
                             <div class="row">
                                 <div class="col-md-4 ">
-                                    <img src="frontend/images/ic_event.png" class="features-image" alt="">
+                                    <img src="{{ url('frontend/images/ic_event.png') }}" class="features-image" alt="">
                                     <div class="description">
                                         <h3>Featured Event</h3>
-                                        <p>Tari kecak</p>
+                                        <p>{{ $item->featured_event }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-left">
-                                    <img src="frontend/images/ic_event.png" class="features-image" alt="">
+                                    <img src="{{ url('frontend/images/ic_event.png') }}" class="features-image" alt="">
                                     <div class="description">
                                         <h3>Bahasa</h3>
-                                        <p>Bahasa Indonesia</p>
+                                        <p>{{ $item->language }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-left">
-                                    <img src="frontend/images/ic_event.png" class="features-image" alt="">
+                                    <img src="{{ url('frontend/images/ic_event.png') }}" class="features-image" alt="">
                                     <div class="description">
                                         <h3>Food</h3>
-                                        <p>Local food</p>
+                                        <p>{{ $item->foods }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +127,7 @@
                                     <p>Date of Departure</p>
                                 </div>
                                 <div class="d-flex justify-content-end text-detail">
-                                    <p>22 Aug 2020</p>
+                                    <p>{{ \Carbon\Carbon::create($item->date_of_departure)->format('F, n, Y') }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -155,7 +135,7 @@
                                     <p>Duration</p>
                                 </div>
                                 <div class="d-flex justify-content-end text-detail">
-                                    <p>4D 3N</p>
+                                    <p>{{ $item->duration }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -163,7 +143,7 @@
                                     <p>Type</p>
                                 </div>
                                 <div class="d-flex justify-content-end text-detail">
-                                    <p>Open Trip</p>
+                                    <p>{{ $item->type }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -171,16 +151,24 @@
                                     <p>Price</p>
                                 </div>
                                 <div class="d-flex justify-content-end text-detail">
-                                    <p>Rp.3.200.000/person</p>
+                                    <p>Rp.{{ $item->price }},00/person</p>
                                 </div>
                             </div>
                         </div>
                         <hr class="ml-3">
                     </div>
                     <div class="join-container">
-                        <a href="{{ route('checkout') }}" class="btn btn-block btn-join-now mt-3 py-2">
-                            Join Now
+                        @auth
+                            <form action="{{ route('checkout_process', $item->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-block btn-join-now mt-3 py-2">Join Now</button>
+                            </form>
+                        @endauth
+                        @guest
+                        <a href="{{ route('login') }}" class="btn btn-block btn-join-now mt-3 py-2">
+                            Login or Register to Join
                         </a>
+                        @endguest
                     </div>
                 </div>
             </div>
