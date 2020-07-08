@@ -516,3 +516,70 @@ header {
         }
     }
 }
+
+.login-container{
+    @media (min-width: 992px) {
+        background: linear-gradient(90 deg, #ffffff 60% , #E4E6EB 40%);
+        // width: 100vw;
+        // height: 100vw; 
+    }
+}
+
+.page-login{
+    // height: 100vw;
+
+    .btn-login{
+        background-color: #FF9E53;
+        color: #ffffff;
+
+        &:hover {
+            background-color: rgb(255, 184, 130);
+            color: #ffffff;
+        }
+    }
+
+    .section-left{
+        h1{
+            font-family: "Playfair Display";
+            font-weight: bold;
+            font-size: 50px;
+            text-align: left;
+            color: #051334;
+        }
+    }
+    .section-right{
+        a{
+            font-family: Assistant;
+            font-weight: 300;
+            text-decoration: underline;
+            font-size: 16px;
+            text-align: center;
+            color: #bfbfbf;
+        }
+    }
+}
+
+.btn-register{
+    background-color: #FF9E53;
+    color: #ffffff;
+
+    &:hover {
+        background-color: rgb(255, 184, 130);
+        color: #ffffff;
+    }
+}
+.p-register{
+    font-family: Assistant;
+    font-weight: 300;
+    text-decoration: underline;
+    font-size: 16px;
+    text-align: center;
+    color: #bfbfbf;
+}
+.title-register{
+    font-family: "Playfair Display";
+    font-weight: bold;
+    font-size: 50px;
+    text-align: left;
+    color: #051334;
+}

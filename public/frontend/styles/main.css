@@ -477,4 +477,65 @@ header .btn-get-started:hover {
   background-color: #1f4ab1;
   color: #fff;
 }
+
+@media (min-width: 992px) {
+  .login-container {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(deg, 90), color-stop(60%, #ffffff), color-stop(40%, #E4E6EB));
+    background: linear-gradient(90 deg, #ffffff 60%, #E4E6EB 40%);
+  }
+}
+
+.page-login .btn-login {
+  background-color: #FF9E53;
+  color: #ffffff;
+}
+
+.page-login .btn-login:hover {
+  background-color: #ffb882;
+  color: #ffffff;
+}
+
+.page-login .section-left h1 {
+  font-family: "Playfair Display";
+  font-weight: bold;
+  font-size: 50px;
+  text-align: left;
+  color: #051334;
+}
+
+.page-login .section-right a {
+  font-family: Assistant;
+  font-weight: 300;
+  text-decoration: underline;
+  font-size: 16px;
+  text-align: center;
+  color: #bfbfbf;
+}
+
+.btn-register {
+  background-color: #FF9E53;
+  color: #ffffff;
+}
+
+.btn-register:hover {
+  background-color: #ffb882;
+  color: #ffffff;
+}
+
+.p-register {
+  font-family: Assistant;
+  font-weight: 300;
+  text-decoration: underline;
+  font-size: 16px;
+  text-align: center;
+  color: #bfbfbf;
+}
+
+.title-register {
+  font-family: "Playfair Display";
+  font-weight: bold;
+  font-size: 50px;
+  text-align: left;
+  color: #051334;
+}
 /*# sourceMappingURL=main.css.map */
